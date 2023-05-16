@@ -1,0 +1,12 @@
+FROM python:3.8-alpine
+LABEL "written-by"="noob.hy"
+USER root
+RUN apk update --no-cache
+RUN pip install --upgrade pip
+WORKDIR /opt/python-microservice
+COPY requirement.txt .
+RUN pip install -r requirement.txt
+COPY . .
+CMD python run app.py
+~
+

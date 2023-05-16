@@ -1,0 +1,99 @@
+		====================Docker====================
+              	It's Not Anyting More Than Isolate Proccess
+
+- flexible
+- multi-os
+- speed
+- size
+docker image ls == docker images # to show list of image
+docker image rm == docker rmi <image-name>
+
+docker container run == docker run # work with container & other command
+
+docker container run -i (interactive) -d (detach on backgroung) -t (tty)
+<image> -p <publis-port>
+
+docker container run -itd -p 8080:80 nginx:latest
+
+docker container rm <container-name>
+docker container ls
+docker container ps
+docker container stat (Show live use resource)
+docker container start/stop/restart/rename/inspect/top 
+
+
+docker container run --name <name> --network <network> --volume <volume> -d -e <enviroment> 
+
+docker container run --name <database> -d -e MYSQLROOT_PASSWORD=<--> 
+
+docker container exec -it <container-name> /bin/bash
+
+docker container exec <container-name> ls
+docker container cp <source> <destination>
+docker cp <img-name>:/etc/nginx/nginx.conf .
+
+## Sometime Our Engine Broken And We Our Container Are Working Fine We use
+live-restore Option
+
+nsenter -a -t <pid> <container-name> -u root -p 
+
+docker image ls # List Image
+docker image rm
+# Save image With all config
+docker image save -o(output) <1.tar> <name>
+docker image load -i <1> 
+docker image import <1.tar> <name> # Delete All config And We don't have docker history 
+
+
+		################### Docker file ####################
+
+# Create Our Custome img
+ex.dockerfile
+arg key:value # set enviroment to image
+from <image-name>
+run apt-get update # run ==> effect on image while creating
+copy <path_host> <path_container>
+add <path_host> <path_container>  # Option unzip file when copy and accept web address
+cmd python ./tets.py #effect on container after creating img DONE.
+entrypoint <command>
+# cmd Like argument pass to entrypoint 
+env key:value # set enviroment on container
+user <username>
+expose 8080/tcp # for tell information 
+label "maintainer = <writer>"
+
+# Create Image
+docker build -t ex.dockerfile
+
+
+		################### Network ####################
+
+
+docker network ls
+docker network inspect <network-name>
+docker network create <name>
+docker network port <container>
+docker network connect <network-name> <container>
+driver bridge(default) host (Use From Network Host)
+
+		################### dockerfile ####################
+
+FROM python:3
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		<package-name> \
+	&& rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+run ls -l
+
+CMD pyhton app.py
+
+docker build -t <name-img> . # Create img

@@ -1,0 +1,33 @@
+version: !!str 3
+services:
+  grafana:
+    container_name: grafana-logging
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+  loki:
+    container_name: loki_database
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki_data:/loki
+  fluentbit:
+    container_name: fluentbit
+    image: fluent/fluent-bit
+    ports:
+      - 24224:24224
+      - 2020:2020
+    command:
+      - /fluent-bit/bin/fluent-bit
+      - -c
+      - /fluent-bit.conf
+    volumes:
+      - ./fluentbit.conf:/fluent-bit.conf
+      - ./parsers.conf:/parsers.conf
+volumes:
+   grafana_data:
+   loki_data:
+
