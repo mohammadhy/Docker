@@ -48,23 +48,31 @@ docker image import <1.tar> <name> # Delete All config And We don't have docker 
 		################### Docker file ####################
 
 # Create Our Custome img
-ex.dockerfile
+EXAMPLE.dockerfile
 arg key:value # set enviroment to image
 from <image-name>
 run apt-get update # run ==> effect on image while creating
 copy <path_host> <path_container>
-add <path_host> <path_container>  # Option unzip file when copy and accept web address
+add <path_host> <path_container>  # Option unzip file when copy and accept web address and accept url
 cmd python ./tets.py #effect on container after creating img DONE.
 entrypoint <command>
 # cmd Like argument pass to entrypoint 
 env key:value # set enviroment on container
 user <username>
-expose 8080/tcp # for tell information 
+expose 8080/tcp # for tell information about what ports use
 label "maintainer = <writer>"
 
 # Create Image
 docker build -t ex.dockerfile
 
+
+
+ENV: future for container running
+ARG: future for image creating
+ADD: Like Copy But Unzip zip file and accept Http url
+COPy: Copy File Host To Container
+CMD:	Sets default parameters that can be overridden from the Docker command line interface (CLI) while running a docker container
+ENTRYPOINT:	Sets default parameters that cannot be overridden while executing Docker containers with CLI parameters
 
 		################### Network ####################
 
