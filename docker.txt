@@ -66,9 +66,8 @@ label "maintainer = <writer>"
 docker build -t ex.dockerfile
 
 
-
-ENV: future for container running
-ARG: future for image creating
+ENV: environment future for container running
+ARG: environment future for image creating
 ADD: Like Copy But Unzip zip file and accept Http url
 COPy: Copy File Host To Container
 CMD:	Sets default parameters that can be overridden from the Docker command line interface (CLI) while running a docker container
@@ -76,7 +75,7 @@ ENTRYPOINT:	Sets default parameters that cannot be overridden while executing Do
 
 		################### Network ####################
 
-
+# default network bridge if you set to host container access to network host and no isolation for network happen
 docker network ls
 docker network inspect <network-name>
 docker network create <name>
@@ -105,3 +104,21 @@ run ls -l
 CMD pyhton app.py
 
 docker build -t <name-img> . # Create img
+		########################## trick ###########################
+
+# To Check Which Files Are Edited In Container Use
+docker container diff <container_name>
+
+docker container stop and pause
+pause get cpu but data in ram 
+stop terminate cpu and ram
+
+docker image save <image_name>  --out <namefile>
+
+docker image load vs docker image import
+load unpack tar saved image perevisly 
+import create new docker image
+
+/sys/fs/cgroup # limit allocation resource
+
+docker container run --cidfile <file_name> # save id container into file use for CI/CD
