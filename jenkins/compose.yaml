@@ -1,0 +1,28 @@
+services:
+  jenkins:
+    image: public.ecr.aws/bitnami/jenkins:latest
+    user: root
+    privileged: true
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+     - 8085:8080
+     - 5000:5000
+     - 8443:8443
+    volumes:
+      - jenkins_data:/bitnami/jenkins
+      - /var/run/docker.sock:/var/run/docker.sock
+  agent:
+    image: jenkins/ssh-agent:alpine-jdk17
+    user: root
+    privileged: true
+    container_name: agent
+    expose:
+    - 22
+    environment:
+    - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDTD3v9aMyh7/34rTCPC/9mVo6JwnGNZnuJ54WqeR4gLivyJfF1vKp/k/nC1YaYPXCsbAFuAKFVpQp3Iw/x23qv7vajJiAliXph6dI+uK7tgzwrGhCNMVnclt+xOYLfBPhuLP7h7YBGYu44HrUtlswEx08vZtg8Ez+LIRlfvy93JrUfbKUDs1xcrjidZRXvk+LZOITKC8eF1i8VowDt/oM9eSaxYWhRkfkEc5iVESEZMRq3yYGyEZkO5mMdx8+UyevmqOkmy15kpCtSB/04x/5RNCB46jREfO/blLydlKEuThykUg9zXaHBed95zl458C/nzul+bEqQXAqdG6piiMeePax/ghxU/jA/AQ2UgTPnbK8ayARmNGKQ9kDUI4LfKuozxQp9bskBlO7QZaE61oa6GR+BkwZd3MekNtYJvx7/Qbnr/nDjjmkoN/NmpNg7yKuB8ZmBJ1Z4EsOuct4UNVY7zk8oeEvwqG1VP1D5ja7DkW1jxt9iwT34/UHEI1PiGh2v0gMYn7Xf3EFXfvL8L9Y320UmJ/HjNxcU7WIzEPnL8icuAcSfiQ+pJp1H/u02uz9/LgtYvRPk7kd7lONgmZFCpEQKd+msQt8tpHtuBEddXROxgGvDX5olMCV2620JdBptlgZ40udwYI3qResLlWc14PuCGO41CH0dn7OHZbaayw== jenkins@jenkins
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./sshd_config:/etc/ssh/sshd_config:rw
+volumes:
+  jenkins_data:
