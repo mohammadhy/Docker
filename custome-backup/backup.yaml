@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: daily-backup
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            backup: "true"
+        spec:
+          containers:
+          - name: backup-container
+            image: custome-backup
+            env:
+            - name: NAMESPACE
+              value: "default"
+            - name: RESOURCE
+              value: "pod"
+            - name: NAME
+              value: "example-pod"
+            - name: PATH_BACKUP
+              value: "/etc/resolv.conf"
+            command: ["/bin/bash"]
+            args: ['-c', "/usr/local/bin/mc alias set myminio http://192.168.4.248:9000 minioadmin minioadmin && ./script.sh"
+          restartPolicy: OnFailure

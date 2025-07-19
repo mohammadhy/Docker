@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+  annotations:
+    backup: "true"
+spec:
+  containers:
+  - name: example
+    image: nginx
